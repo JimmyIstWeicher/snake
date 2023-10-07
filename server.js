@@ -88,12 +88,8 @@ function init() {
     player: [
       {
         name: firstName,
-        color: {
-          color: "blue",
-        },
-        points: {
-          points: 1,
-        },
+
+        points: 1,
         pos: {
           x: 10,
           y: 2,
@@ -109,13 +105,9 @@ function init() {
         ],
       },
       {
-        name: secondName ,
-        color: {
-          color: "blue",
-        },
-        points: {
-          points: 1,
-        },
+        name: secondName,
+
+        points: 1,
         pos: {
           x: 20,
           y: 2,
@@ -198,27 +190,17 @@ function gameLoop(game) {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (
-    playerOneX > 30 ||
-    playerOneX < 0 ||
-    playerOneY > 30 ||
-    playerOneY < 0
-  ) {
+  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
     clearInterval(myInterval);
-    game.player[1].points.points += 5;
+    game.player[1].points += 5;
     evaluate();
 
     return;
   }
 
-  if (
-    playerTwoX > 30 ||
-    playerTwoX < 0 ||
-    playerTwoY > 30 ||
-    playerTwoY < 0
-  ) {
+  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
     clearInterval(myInterval);
-    game.player[0].points.points += 5;
+    game.player[0].points += 5;
     evaluate();
     return;
   }
@@ -233,7 +215,7 @@ function gameLoop(game) {
       cell2.y == game.player[0].body[game.player[0].body.length - 1].y
     ) {
       clearInterval(myInterval);
-      game.player[1].points.points += 5;
+      game.player[1].points += 5;
       evaluate();
       return;
     }
@@ -251,7 +233,7 @@ function gameLoop(game) {
       cell2.y == game.player[1].body[game.player[1].body.length - 1].y
     ) {
       clearInterval(myInterval);
-      game.player[0].points.points += 5;
+      game.player[0].points += 5;
       evaluate();
       return;
     }
@@ -264,7 +246,7 @@ function gameLoop(game) {
 
     if (cell2.x == game.player[1].pos.x && cell2.y == game.player[1].pos.y) {
       clearInterval(myInterval);
-      game.player[0].points.points += 5;
+      game.player[0].points += 5;
       evaluate();
       return;
     }
@@ -277,7 +259,7 @@ function gameLoop(game) {
 
     if (cell2.x == game.player[0].pos.x && cell2.y == game.player[0].pos.y) {
       clearInterval(myInterval);
-      game.player[1].points.points += 5;
+      game.player[1].points += 5;
       evaluate();
 
       return;
@@ -287,7 +269,7 @@ function gameLoop(game) {
 
   if (playerOneX == game.food.x && playerOneY == game.food.y) {
     console.log("food!");
-    game.player[0].points.points += 1;
+    game.player[0].points += 1;
     playerOne.body.push({
       x: playerOne.body[playerOne.body.length - 1].x,
       y: playerOne.body[playerOne.body.length - 1].y,
@@ -298,7 +280,7 @@ function gameLoop(game) {
   }
   if (playerTwoX == game.food.x && playerTwoY == game.food.y) {
     console.log("food!");
-    game.player[1].points.points += 1;
+    game.player[1].points += 1;
     playerTwo.body.push({
       x: playerTwo.body[playerTwo.body.length - 1].x,
       y: playerTwo.body[playerTwo.body.length - 1].y,
@@ -313,10 +295,8 @@ function gameLoop(game) {
 function startGame() {
   init();
   console.log("start");
-  myInterval = setInterval(intervalFunction, 90);
+  myInterval = setInterval(intervalFunction, 120);
 }
-
-
 
 function intervalFunction() {
   let myGame = gameLoop(game);
@@ -330,7 +310,7 @@ function createRandomPos() {
 }
 
 function evaluate() {
-  if (game.player[0].points.points > game.player[1].points.points) {
+  if (game.player[0].points > game.player[1].points) {
     sockserver.clients.forEach((client) => {
       client.send("loser:" + secondID);
     });
