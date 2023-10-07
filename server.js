@@ -313,7 +313,7 @@ function gameLoop(game) {
 function startGame() {
   init();
   console.log("start");
-  myInterval = setInterval(intervalFunction, 120);
+  myInterval = setInterval(intervalFunction, 90);
 }
 
 function intervalFunction() {
