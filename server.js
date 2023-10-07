@@ -109,7 +109,7 @@ function init() {
         ],
       },
       {
-        name: secondName,
+        name: secondName ,
         color: {
           color: "blue",
         },
@@ -198,7 +198,12 @@ function gameLoop(game) {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
+  if (
+    playerOneX > 30 ||
+    playerOneX < 0 ||
+    playerOneY > 30 ||
+    playerOneY < 0
+  ) {
     clearInterval(myInterval);
     game.player[1].points.points += 5;
     evaluate();
@@ -206,7 +211,12 @@ function gameLoop(game) {
     return;
   }
 
-  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
+  if (
+    playerTwoX > 30 ||
+    playerTwoX < 0 ||
+    playerTwoY > 30 ||
+    playerTwoY < 0
+  ) {
     clearInterval(myInterval);
     game.player[0].points.points += 5;
     evaluate();
@@ -278,8 +288,6 @@ function gameLoop(game) {
   if (playerOneX == game.food.x && playerOneY == game.food.y) {
     console.log("food!");
     game.player[0].points.points += 1;
-    speedUp(200 / game.player[1].points.points + game.player[2].points.points);
-
     playerOne.body.push({
       x: playerOne.body[playerOne.body.length - 1].x,
       y: playerOne.body[playerOne.body.length - 1].y,
@@ -291,7 +299,6 @@ function gameLoop(game) {
   if (playerTwoX == game.food.x && playerTwoY == game.food.y) {
     console.log("food!");
     game.player[1].points.points += 1;
-    speedUp(200 / game.player[1].points.points + game.player[2].points.points);
     playerTwo.body.push({
       x: playerTwo.body[playerTwo.body.length - 1].x,
       y: playerTwo.body[playerTwo.body.length - 1].y,
@@ -309,10 +316,7 @@ function startGame() {
   myInterval = setInterval(intervalFunction, 120);
 }
 
-function speedUp(speed) {
-  clearInterval(myInterval);
-  myInterval = setInterval(intervalFunction, speed);
-}
+
 
 function intervalFunction() {
   let myGame = gameLoop(game);
