@@ -109,7 +109,7 @@ function init() {
         ],
       },
       {
-        name: secondName,
+        name: secondName ,
         color: {
           color: "blue",
         },
@@ -139,6 +139,44 @@ function init() {
 }
 function gameLoop(game) {
   //console.log("Player One " + msg1);
+  switch (msg1) {
+    case "ArrowUp":
+      game.player[0].direction.x = 0;
+      game.player[0].direction.y = -1;
+      break;
+    case "ArrowRight":
+      game.player[0].direction.x = +1;
+      game.player[0].direction.y = 0;
+      break;
+    case "ArrowDown":
+      game.player[0].direction.x = 0;
+      game.player[0].direction.y = +1;
+      break;
+    case "ArrowLeft":
+      game.player[0].direction.x = -1;
+      game.player[0].direction.y = 0;
+      break;
+  }
+
+  //console.log("Player Two " + msg2);
+  switch (msg2) {
+    case "ArrowUp":
+      game.player[1].direction.x = 0;
+      game.player[1].direction.y = -1;
+      break;
+    case "ArrowRight":
+      game.player[1].direction.x = 1;
+      game.player[1].direction.y = 0;
+      break;
+    case "ArrowDown":
+      game.player[1].direction.x = 0;
+      game.player[1].direction.y = +1;
+      break;
+    case "ArrowLeft":
+      game.player[1].direction.x = -1;
+      game.player[1].direction.y = 0;
+      break;
+  }
 
   let playerOne = game.player[0];
   let playerTwo = game.player[1];
@@ -160,7 +198,12 @@ function gameLoop(game) {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
+  if (
+    playerOneX > 30 ||
+    playerOneX < 0 ||
+    playerOneY > 30 ||
+    playerOneY < 0
+  ) {
     clearInterval(myInterval);
     game.player[1].points.points += 5;
     evaluate();
@@ -168,7 +211,12 @@ function gameLoop(game) {
     return;
   }
 
-  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
+  if (
+    playerTwoX > 30 ||
+    playerTwoX < 0 ||
+    playerTwoY > 30 ||
+    playerTwoY < 0
+  ) {
     clearInterval(myInterval);
     game.player[0].points.points += 5;
     evaluate();
@@ -258,44 +306,6 @@ function gameLoop(game) {
     game.food.x = createRandomPos();
     game.food.y = createRandomPos();
   }
-  switch (msg1) {
-    case "ArrowUp":
-      game.player[0].direction.x = 0;
-      game.player[0].direction.y = -1;
-      break;
-    case "ArrowRight":
-      game.player[0].direction.x = +1;
-      game.player[0].direction.y = 0;
-      break;
-    case "ArrowDown":
-      game.player[0].direction.x = 0;
-      game.player[0].direction.y = +1;
-      break;
-    case "ArrowLeft":
-      game.player[0].direction.x = -1;
-      game.player[0].direction.y = 0;
-      break;
-  }
-
-  //console.log("Player Two " + msg2);
-  switch (msg2) {
-    case "ArrowUp":
-      game.player[1].direction.x = 0;
-      game.player[1].direction.y = -1;
-      break;
-    case "ArrowRight":
-      game.player[1].direction.x = 1;
-      game.player[1].direction.y = 0;
-      break;
-    case "ArrowDown":
-      game.player[1].direction.x = 0;
-      game.player[1].direction.y = +1;
-      break;
-    case "ArrowLeft":
-      game.player[1].direction.x = -1;
-      game.player[1].direction.y = 0;
-      break;
-  }
 
   return game;
 }
@@ -303,7 +313,7 @@ function gameLoop(game) {
 function startGame() {
   init();
   console.log("start");
-  myInterval = setInterval(intervalFunction, 85);
+  myInterval = setInterval(intervalFunction, 120);
 }
 
 function intervalFunction() {
