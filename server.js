@@ -1,5 +1,5 @@
 const { WebSocketServer } = require("ws");
-const sockserver = new WebSocketServer({ port: 300 });
+const sockserver = new WebSocketServer({ port: 3000 });
 let firstID = "";
 let secondID = "";
 let myInterval;
