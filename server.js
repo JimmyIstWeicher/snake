@@ -190,7 +190,7 @@ function gameLoop(game) {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
+  if (playerOneX > 64 || playerOneX < 0 || playerOneY > 36 || playerOneY < 0) {
     clearInterval(myInterval);
     game.player[1].points += 5;
     evaluate();
@@ -198,7 +198,7 @@ function gameLoop(game) {
     return;
   }
 
-  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
+  if (playerTwoX > 64 || playerTwoX < 0 || playerTwoY > 36 || playerTwoY < 0) {
     clearInterval(myInterval);
     game.player[0].points += 5;
     evaluate();
