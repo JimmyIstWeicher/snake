@@ -1,5 +1,5 @@
 const { WebSocketServer } = require("ws");
-const sockserver = new WebSocketServer({ port: 3000 });
+const sockserver = new WebSocketServer({ port: 8080 });
 let firstID = "";
 let secondID = "";
 let myInterval;
@@ -129,8 +129,7 @@ function init() {
     },
   };
 }
-function gameLoop(game) {
-  //console.log("Player One " + msg1);
+function gameLoop() {
   switch (msg1) {
     case "ArrowUp":
       game.player[0].direction.x = 0;
@@ -190,7 +189,7 @@ function gameLoop(game) {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (playerOneX > 64 || playerOneX < 0 || playerOneY > 36 || playerOneY < 0) {
+  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
     clearInterval(myInterval);
     game.player[1].points += 5;
     evaluate();
@@ -198,7 +197,7 @@ function gameLoop(game) {
     return;
   }
 
-  if (playerTwoX > 64 || playerTwoX < 0 || playerTwoY > 36 || playerTwoY < 0) {
+  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
     clearInterval(myInterval);
     game.player[0].points += 5;
     evaluate();
@@ -299,7 +298,7 @@ function startGame() {
 }
 
 function intervalFunction() {
-  let myGame = gameLoop(game);
+  let myGame = gameLoop();
   sockserver.clients.forEach((client) => {
     client.send(JSON.stringify(myGame));
   });
