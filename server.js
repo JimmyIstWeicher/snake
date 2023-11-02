@@ -2,12 +2,12 @@ const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 8080 });
 let firstID = "";
 let secondID = "";
-let myInterval;
 let msg1 = "ArrowDown";
 let msg2 = "ArrowDown";
 let full = false;
 let firstName;
 let secondName;
+let gameOver = false;
 sockserver.getUniqueID = function () {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -54,6 +54,7 @@ sockserver.on("connection", (ws) => {
     });
     ws.on("message", (data) => {
       let msg = `${data}`;
+      console.log(msg);
       const id2 = ws.id;
       if (msg.slice(0, 5) == "name:") {
         if (id2 == firstID) {
@@ -69,6 +70,7 @@ sockserver.on("connection", (ws) => {
       }
       if (msg.slice(0, 13) == firstID) {
         msg1 = msg.slice(13);
+        //später
       } else if (msg.slice(0, 13) == secondID) {
         msg2 = msg.slice(13);
       }
@@ -82,6 +84,7 @@ sockserver.on("connection", (ws) => {
 let game = {};
 
 function init() {
+  gameOver = false;
   msg1 = "ArrowDown";
   msg2 = "ArrowDown";
   game = {
@@ -189,16 +192,26 @@ function gameLoop() {
   let playerTwoX = playerTwo.pos.x;
   let playerTwoY = playerTwo.pos.y;
 
-  if (playerOneX > 30 || playerOneX < 0 || playerOneY > 30 || playerOneY < 0) {
-    clearInterval(myInterval);
+  if (
+    playerOneX >= 30 ||
+    playerOneX < 0 ||
+    playerOneY >= 30 ||
+    playerOneY < 0
+  ) {
+    gameOver = true;
     game.player[1].points += 5;
     evaluate();
 
     return;
   }
 
-  if (playerTwoX > 30 || playerTwoX < 0 || playerTwoY > 30 || playerTwoY < 0) {
-    clearInterval(myInterval);
+  if (
+    playerTwoX >= 30 ||
+    playerTwoX < 0 ||
+    playerTwoY >= 30 ||
+    playerTwoY < 0
+  ) {
+    gameOver = true;
     game.player[0].points += 5;
     evaluate();
     return;
@@ -213,7 +226,7 @@ function gameLoop() {
       cell2.x == game.player[0].body[game.player[0].body.length - 1].x &&
       cell2.y == game.player[0].body[game.player[0].body.length - 1].y
     ) {
-      clearInterval(myInterval);
+      gameOver = true;
       game.player[1].points += 5;
       evaluate();
       return;
@@ -231,7 +244,7 @@ function gameLoop() {
       cell2.x == game.player[1].body[game.player[1].body.length - 1].x &&
       cell2.y == game.player[1].body[game.player[1].body.length - 1].y
     ) {
-      clearInterval(myInterval);
+      gameOver = true;
       game.player[0].points += 5;
       evaluate();
       return;
@@ -244,7 +257,7 @@ function gameLoop() {
     let cell2 = game.player[0].body[i];
 
     if (cell2.x == game.player[1].pos.x && cell2.y == game.player[1].pos.y) {
-      clearInterval(myInterval);
+      gameOver = true;
       game.player[0].points += 5;
       evaluate();
       return;
@@ -257,7 +270,7 @@ function gameLoop() {
     let cell2 = game.player[1].body[i];
 
     if (cell2.x == game.player[0].pos.x && cell2.y == game.player[0].pos.y) {
-      clearInterval(myInterval);
+      gameOver = true;
       game.player[1].points += 5;
       evaluate();
 
@@ -291,14 +304,23 @@ function gameLoop() {
   return game;
 }
 
-function startGame() {
+async function startGame() {
   init();
   console.log("start");
-  myInterval = setInterval(intervalFunction, 120);
+  while (!gameOver) {
+    await sleep(1000 / (game.player[0].points + game.player[1].points));
+
+    intervalFunction();
+  }
+  //myInterval = setInterval(intervalFunction, 50);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function intervalFunction() {
-  let myGame = gameLoop();
+  const myGame = gameLoop();
   sockserver.clients.forEach((client) => {
     client.send(JSON.stringify(myGame));
   });
