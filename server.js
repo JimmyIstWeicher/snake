@@ -2,7 +2,7 @@ const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 8080 });
 let firstID = "";
 let secondID = "";
-let msg1 = "ArrowDown";
+let msg1 = "ArrowDow";
 let msg2 = "ArrowDown";
 let full = false;
 let firstName;
